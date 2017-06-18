@@ -5,6 +5,28 @@ and include the results in your report.
 import random
 
 
+area1 = [[0,0], [0, 6], [6, 0], [6, 6]]
+area2 = [[0, 1], [1, 0], [0, 5], [5, 0], [1, 6], [6, 1], [5, 6], [6, 5]]
+area3 = [[0, 2], [0, 3], [0, 4], [2, 0], [3, 0], [4, 0], [1, 1], [5, 5], [1, 5], [5, 1],
+         [2, 6], [3, 6], [4, 6], [6, 2], [6, 3], [6, 4]]
+area4 = [[1, 2], [1, 3], [1, 4], [2, 1], [3, 1], [4, 1],
+         [2, 5], [3, 5], [4, 5], [5, 2], [5, 3], [5, 4]]
+area5 = [[2, 2], [2, 3], [2, 4], [3, 2], [3, 3], [3, 4],
+         [4, 2], [4, 3], [4, 4]]
+'''
+areas = {}
+for pos in area1:
+    areas[pos] = 1
+for pos in area2:
+    areas[pos] = 2
+for pos in area3:
+    areas[pos] = 3
+for pos in area4:
+    areas[pos] = 4
+for pos in area5:
+    areas[pos] = 5
+'''
+
 class SearchTimeout(Exception):
     """Subclass base exception for code clarity. """
     pass
@@ -72,7 +94,30 @@ def custom_score_2(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
-    raise NotImplementedError
+    #raise NotImplementedError
+    
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+    #print("Score for player ", player, "-->", float(len(game.get_legal_moves(player))))
+    #print(game.to_string())
+    result = 0
+    aux = 0
+    for move in game.get_legal_moves(player):
+        if move in area1:
+            aux = 1
+        elif move in area2:
+            aux = 2
+        elif move in area3:
+            aux = 3
+        elif move in area4:
+            aux = 4
+        elif move in area5:
+            aux = 5
+        result += aux
+    return float(result)
 
 
 def custom_score_3(game, player):
@@ -98,7 +143,17 @@ def custom_score_3(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
-    raise NotImplementedError
+    #raise NotImplementedError
+    
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+    #print("Score for player ", player, "-->", float(len(game.get_legal_moves(player))))
+    #print(game.to_string())
+
+    return float(len(game.get_legal_moves(player)) - len(game.get_legal_moves(game.get_opponent(player))))
 
 
 class IsolationPlayer:
@@ -168,12 +223,13 @@ class MinimaxPlayer(IsolationPlayer):
 
         # Initialize the best move so that this function returns something
         # in case the search fails due to timeout
-        best_move = (-1, -1)
+        legal_moves = game.get_legal_moves()
+        best_move = (legal_moves[0] if legal_moves else (-1, -1))
 
         try:
             # The try/except block will automatically catch the exception
             # raised when the timer is about to expire.
-            return self.minimax(game, self.search_depth)
+            best_move = self.minimax(game, self.search_depth)
 
         except SearchTimeout:
             pass  # Handle any actions required after timeout as needed
@@ -264,7 +320,6 @@ class MinimaxPlayer(IsolationPlayer):
         """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
-
         # TODO: finish this function!
         #raise NotImplementedError
         values_option = []
@@ -330,12 +385,16 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         # Initialize the best move so that this function returns something
         # in case the search fails due to timeout
-        best_move = (-1, -1)
+        legal_moves = game.get_legal_moves()
+        best_move = (legal_moves[0] if legal_moves else (-1, -1))
+        partial_depth = 1
 
         try:
             # The try/except block will automatically catch the exception
             # raised when the timer is about to expire.
-            return self.alphabeta(game, self.search_depth)
+            while True:
+                best_move = self.alphabeta(game, partial_depth)
+                partial_depth += 1
 
         except SearchTimeout:
             pass  # Handle any actions required after timeout as needed
@@ -389,9 +448,10 @@ class AlphaBetaPlayer(IsolationPlayer):
                 each helper function or else your agent will timeout during
                 testing.
         """
-        if self.time_left() < self.TIMER_THRESHOLD:
+        if self.time_left() < 3 * self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
+        #print("Time left:", self.time_left())
         # TODO: finish this function!
         #raise NotImplementedError
 
@@ -422,7 +482,7 @@ class AlphaBetaPlayer(IsolationPlayer):
     def _min_value(self, game, depth, alpha, beta):
         '''
         '''
-        if self.time_left() < self.TIMER_THRESHOLD:
+        if self.time_left() < 3 * self.TIMER_THRESHOLD:
             raise SearchTimeout()
         #print("Depth (MIN):", depth)
         if depth <= 0:
@@ -447,7 +507,7 @@ class AlphaBetaPlayer(IsolationPlayer):
     def _max_value(self, game, depth, alpha, beta):
         '''
         '''
-        if self.time_left() < self.TIMER_THRESHOLD:
+        if self.time_left() < 3 * self.TIMER_THRESHOLD:
             raise SearchTimeout()
         #print("Depth (MAX):", depth)
         if depth <= 0:
@@ -465,5 +525,3 @@ class AlphaBetaPlayer(IsolationPlayer):
             alpha = max(alpha, max_val)
         #print("Chosen SCORE (MAX):", max_val)
         return max_val
-
-

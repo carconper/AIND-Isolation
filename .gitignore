@@ -94,4 +94,6 @@ ENV/
 # Rope project settings
 .ropeproject
 
+# Udacity Submission results
+isolation-*
 # End of https://www.gitignore.io/api/python
