@@ -10,43 +10,14 @@ class SearchTimeout(Exception):
     pass
 
 
-def custom_score_2(game, player):
-    """Outputs a score equal to square of the distance from the position
-    under evaluation and the opponent player.
-
-    Parameters
-    ----------
-    game : `isolation.Board`
-        An instance of `isolation.Board` encoding the current state of the
-        game (e.g., player locations and blocked cells).
-
-    player : hashable
-        One of the objects registered by the game object as a valid player.
-        (i.e., `player` should be either game.__player_1__ or
-        game.__player_2__).
-
-    Returns
-    ----------
-    float
-        The heuristic value of the current game state
-    """
-    if game.is_loser(player):
-        return float("-inf")
-
-    if game.is_winner(player):
-        return float("inf")
-
-    yp, xp = game.get_player_location(player)
-    yo, xo = game.get_player_location(game.get_opponent(player))
-    return float((yp - yo)**2 + (xp - xo)**2)
-
-
 def custom_score(game, player):
-    """Outputs a score equal to square of the distance from the center 
-    of the board (higher distance gets lower values, int he contrary of
-    the provided AB_Center heuristic function) and the player weighted 
-    with the difference between player's and opponent's number of legal 
-    moves.
+    """Calculate the heuristic value of a game state from the point of view
+    of the given player.
+
+    This should be the best heuristic function for your project submission.
+
+    Note: this function should be called from within a Player instance as
+    `self.score()` -- you should not need to call this function directly.
 
     Parameters
     ----------
@@ -54,33 +25,81 @@ def custom_score(game, player):
         An instance of `isolation.Board` encoding the current state of the
         game (e.g., player locations and blocked cells).
 
-    player : hashable
-        One of the objects registered by the game object as a valid player.
-        (i.e., `player` should be either game.__player_1__ or
-        game.__player_2__).
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
 
     Returns
-    ----------
+    -------
     float
-        The heuristic value of the current game state
+        The heuristic value of the current game state to the specified player.
     """
+    # TODO: finish this function!
+    #raise NotImplementedError
+
     if game.is_loser(player):
         return float("-inf")
 
     if game.is_winner(player):
         return float("inf")
-    k = game.width / 2.
-    w, h = game.width / 2., game.height / 2.
-    y, x = game.get_player_location(player)
-    own_moves = len(game.get_legal_moves(player))
-    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
-    return k * float(own_moves - opp_moves) - float((h - y)**2 + (w - x)**2)
+    #print("Score for player ", player, "-->", float(len(game.get_legal_moves(player))))
+    #print(game.to_string())
+    #print("CS1_Score:", result)
+
+    return float(len(game.get_legal_moves(player)))
+    #return open_move_score(game, player)
+
+
+def custom_score_2(game, player):
+    """Calculate the heuristic value of a game state from the point of view
+    of the given player.
+
+    Note: this function should be called from within a Player instance as
+    `self.score()` -- you should not need to call this function directly.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    -------
+    float
+        The heuristic value of the current game state to the specified player.
+    """
+    # TODO: finish this function!
+    #raise NotImplementedError
+    
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+    #print("Score for player ", player, "-->", float(len(game.get_legal_moves(player))))
+    #print(game.to_string())
+    result = 0
+    aux = 0
+    for move in game.get_legal_moves(player):
+        if move not in player._areas:
+            result += 8
+        else:
+            result += player._areas[tuple(move)]
+    #print("Position/Score:", game.get_player_location(player), result)
+    #print("CS2_Score:", result)
+    return float(result)
 
 
 def custom_score_3(game, player):
-    """Outputs a score equal to square of the distance from the position 
-    under evaluation and the opponent weighted with the difference between
-    player's and opponent's number of legal moves.
+    """Calculate the heuristic value of a game state from the point of view
+    of the given player.
+
+    Note: this function should be called from within a Player instance as
+    `self.score()` -- you should not need to call this function directly.
 
     Parameters
     ----------
@@ -88,26 +107,35 @@ def custom_score_3(game, player):
         An instance of `isolation.Board` encoding the current state of the
         game (e.g., player locations and blocked cells).
 
-    player : hashable
-        One of the objects registered by the game object as a valid player.
-        (i.e., `player` should be either game.__player_1__ or
-        game.__player_2__).
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
 
     Returns
-    ----------
+    -------
     float
-        The heuristic value of the current game state
+        The heuristic value of the current game state to the specified player.
     """
+    # TODO: finish this function!
+    #raise NotImplementedError
+    
     if game.is_loser(player):
         return float("-inf")
 
     if game.is_winner(player):
         return float("inf")
-    k = game.width / 2.
-    yp, xp = game.get_player_location(player)
-    yo, xo = game.get_player_location(game.get_opponent(player))
-    own_moves = len(game.get_legal_moves(player))
-    return k * float(own_moves) + float((yp - yo)**2 + (xp - xo)**2)
+
+    op_moves = game.get_legal_moves(game.get_opponent(player))
+    moves = game.get_legal_moves(player)
+    result = 0
+    for move in moves:
+        if move not in op_moves:
+            result += 1
+            #print("CS3_Score (move CANT be impacted by opponent)")
+        else:
+            pass
+            #print("CS3_Score (move can be impacted by opponent)")
+    return float(result)
 
 
 class IsolationPlayer:
@@ -148,6 +176,39 @@ class MinimaxPlayer(IsolationPlayer):
     def __init__(self, search_depth=3, score_fn=custom_score, timeout=10.):
         super().__init__()
         self.score = score_fn
+        self._areas = {}
+        self.__define_areas()
+
+    def __define_areas(self):
+        for j in range(7):
+            if j == 0 or j == 6:
+                self._areas[(0, j)] = 1
+                self._areas[(6, j)] = 1
+            elif j == 1 or j == 5:
+                self._areas[(0, j)] = 2
+                self._areas[(6, j)] = 2
+            else:
+                self._areas[(0, j)] = 4
+                self._areas[(6, j)] = 4
+
+        for j in range(7):
+            if j == 0 or j == 6:
+                self._areas[(1, j)] = 2
+                self._areas[(5, j)] = 2
+            elif j == 1 or j == 5:
+                self._areas[(1, j)] = 4
+                self._areas[(5, j)] = 4
+            else:
+                self._areas[(1, j)] = 6
+                self._areas[(5, j)] = 6
+
+        for i in range(2, 5):
+            self._areas[(i, 0)] = 4
+            self._areas[(i, 6)] = 4
+            self._areas[(i, 1)] = 6
+            self._areas[(i, 5)] = 6
+
+        #print(self._areas)
 
     def get_move(self, game, time_left):
         """Search for the best move from the available legal moves and return a
@@ -195,72 +256,45 @@ class MinimaxPlayer(IsolationPlayer):
         # Return the best move from the last completed search iteration
         return best_move
 
-
     def _min_value(self, game, depth):
         '''
-        Implements the min_value recursive evaluation in the minimax algorithm
-
-        Parameters
-        ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
-            game (e.g., player locations and blocked cells).
-
-        depth : int
-            A strictly positive integer (i.e., 1, 2, 3,...) for the number of
-            layers in the game tree to explore for fixed-depth search. (i.e., a
-            depth of one (1) would only explore the immediate sucessors of the
-            current state.)
-
-        Returns
-        ----------
-        float
-            Returns the min value among the evaluated legal moves
         '''
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
+        #print("Depth (MIN):", depth)
         if depth <= 0:
+            #print("Reach depth, score:", self.score(game, game.active_player))
+            #return open_move_score(game, game.active_player) 
             return self.score(game, self)
         min_val = float("inf")
         legal_moves = game.get_legal_moves()
         for m in legal_moves:
+            #print("The move:", m)
             score = self._max_value(game.forecast_move(m), depth - 1)
             if score < min_val:
+                #print("Lower value found, update min_value:", score, min_val)
                 min_val = score
+        #print("Chosen SCORE (MIN):", min_val)
         return min_val
 
 
     def _max_value(self, game, depth):
         '''
-        Implements the max_value recursive evaluation in the minimax algorithm
-
-        Parameters
-        ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
-            game (e.g., player locations and blocked cells).
-
-        depth : int
-            A strictly positive integer (i.e., 1, 2, 3,...) for the number of
-            layers in the game tree to explore for fixed-depth search. (i.e., a
-            depth of one (1) would only explore the immediate sucessors of the
-            current state.)
-
-        Returns
-        ----------
-        float
-            Returns the max value among the evaluated legal moves
         '''
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
+        #print("Depth (MAX):", depth)
         if depth <= 0:
+            #return open_move_score(game, game.active_player) 
             return self.score(game, self)
         max_val = float("-inf")
         legal_moves = game.get_legal_moves()
         for m in legal_moves:
+            #print("The move:", m)
             score = self._min_value(game.forecast_move(m), depth - 1)
             if score > max_val:
                 max_val = score
+        #print("Chosen SCORE (MAX):", max_val)
         return max_val
 
 
@@ -305,16 +339,26 @@ class MinimaxPlayer(IsolationPlayer):
         """
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
+        # TODO: finish this function!
+        #raise NotImplementedError
+        values_option = []
         legal_moves = game.get_legal_moves()
         if not legal_moves:
+            #print("No legal moves available")
             return(-1, -1)
         final_move = (legal_moves[0] if legal_moves else (-1, -1))
+        #print("LEGAL_MOVES/Final_move:", legal_moves, final_move)
         max_val = float("-inf")
         for m in legal_moves:
+            #print("The move:", m)
             score = self._min_value(game.forecast_move(m), depth - 1)
+            #print("The move produces a score of:", m, score)
             if score > max_val:
                 final_move = m
                 max_val = score
+            values_option.append([m, score, max_val])
+        #print("Scores per move:", values_option)
+        #print("FINAL_MOVE:", final_move)
         return final_move
 
 
@@ -326,6 +370,39 @@ class AlphaBetaPlayer(IsolationPlayer):
     def __init__(self, search_depth=3, score_fn=custom_score, timeout=10.):
         super().__init__()
         self.score = score_fn
+        self._areas = {}
+        self.__define_areas()
+
+    def __define_areas(self):
+        for j in range(7):
+            if j == 0 or j == 6:
+                self._areas[(0, j)] = 1
+                self._areas[(6, j)] = 1
+            elif j == 1 or j == 5:
+                self._areas[(0, j)] = 2
+                self._areas[(6, j)] = 2
+            else:
+                self._areas[(0, j)] = 4
+                self._areas[(6, j)] = 4
+
+        for j in range(7):
+            if j == 0 or j == 6:
+                self._areas[(1, j)] = 2
+                self._areas[(5, j)] = 2
+            elif j == 1 or j == 5:
+                self._areas[(1, j)] = 4
+                self._areas[(5, j)] = 4
+            else:
+                self._areas[(1, j)] = 6
+                self._areas[(5, j)] = 6
+
+        for i in range(2, 5):
+            self._areas[(i, 0)] = 4
+            self._areas[(i, 6)] = 4
+            self._areas[(i, 1)] = 6
+            self._areas[(i, 5)] = 6
+
+        #print(self._areas)
 
 
     def get_move(self, game, time_left):
@@ -359,6 +436,8 @@ class AlphaBetaPlayer(IsolationPlayer):
             (-1, -1) if there are no available legal moves.
         """
         self.time_left = time_left
+        # TODO: finish this function!
+        #raise NotImplementedError
 
         # Initialize the best move so that this function returns something
         # in case the search fails due to timeout
@@ -428,93 +507,77 @@ class AlphaBetaPlayer(IsolationPlayer):
         if self.time_left() < 3 * self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
+        #print("Time left:", self.time_left())
+        # TODO: finish this function!
+        #raise NotImplementedError
+
+        values_option = []
         legal_moves = game.get_legal_moves()
         if not legal_moves:
+            #print("No legal moves available")
             return(-1, -1)
         final_move = (legal_moves[0] if legal_moves else (-1, -1))
+        #print("LEGAL_MOVES/Final_move:", legal_moves, final_move)
         max_val = float("-inf")
         for m in legal_moves:
+            #print("The move:", m)
             score = self._min_value(game.forecast_move(m), depth - 1, alpha, beta)
+            #print("The move produces a score of:", m, score)
             if score > max_val:
                 final_move = m
                 max_val = score
             if max_val >= beta:
                 return final_move
             alpha = max(alpha, max_val)
+            values_option.append([m, score, max_val])
+        #print("Scores per move:", values_option)
+        #print("FINAL_MOVE:", final_move)
         return final_move 
 
 
     def _min_value(self, game, depth, alpha, beta):
         '''
-        Implements the min_value recursive evaluation in the alpha-beta 
-        pruning algorithm
-
-        Parameters
-        ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
-            game (e.g., player locations and blocked cells).
-
-        depth : int
-            A strictly positive integer (i.e., 1, 2, 3,...) for the number of
-            layers in the game tree to explore for fixed-depth search. (i.e., a
-            depth of one (1) would only explore the immediate sucessors of the
-            current state.)
-
-        Returns
-        ----------
-        float
-            Returns the min value among the evaluated legal moves
         '''
         if self.time_left() < 3 * self.TIMER_THRESHOLD:
             raise SearchTimeout()
+        #print("Depth (MIN):", depth)
         if depth <= 0:
+            #print("Reach depth, score:", self.score(game, game.active_player))
+            #return open_move_score(game, game.active_player) 
             return self.score(game, self)
         min_val = float("inf")
         legal_moves = game.get_legal_moves()
         for m in legal_moves:
+            #print("The move:", m)
             score = self._max_value(game.forecast_move(m), depth - 1, alpha, beta)
             if score < min_val:
+                #print("Lower value found, update min_value:", score, min_val)
                 min_val = score
             if min_val <= alpha:
                 return min_val
             beta = min(beta, min_val)
+        #print("Chosen SCORE (MIN):", min_val)
         return min_val
 
 
     def _max_value(self, game, depth, alpha, beta):
         '''
-        Implements the max_value recursive evaluation in the alpha-beta 
-        pruning algorithm
-
-        Parameters
-        ----------
-        game : `isolation.Board`
-            An instance of `isolation.Board` encoding the current state of the
-            game (e.g., player locations and blocked cells).
-
-        depth : int
-            A strictly positive integer (i.e., 1, 2, 3,...) for the number of
-            layers in the game tree to explore for fixed-depth search. (i.e., a
-            depth of one (1) would only explore the immediate sucessors of the
-            current state.)
-
-        Returns
-        ----------
-        float
-            Returns the max value among the evaluated legal moves
         '''
         if self.time_left() < 3 * self.TIMER_THRESHOLD:
             raise SearchTimeout()
+        #print("Depth (MAX):", depth)
         if depth <= 0:
+            #return open_move_score(game, game.active_player) 
             return self.score(game, self)
         max_val = float("-inf")
         legal_moves = game.get_legal_moves()
         for m in legal_moves:
+            #print("The move:", m)
             score = self._min_value(game.forecast_move(m), depth - 1, alpha, beta)
             if score > max_val:
                 max_val = score
             if max_val >= beta:
                 return max_val
             alpha = max(alpha, max_val)
+        #print("Chosen SCORE (MAX):", max_val)
         return max_val

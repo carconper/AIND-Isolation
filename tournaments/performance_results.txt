@@ -1,0 +1,169 @@
+########
+MP vs MN
+########
+
+(aind) MacBook-Pro-7:AIND-Isolation carconper$ date; python tournament_MPvsMN.py ; date
+Fri Sep  1 13:48:11 PDT 2017
+                        *************************
+                             Playing Matches
+                        *************************
+
+ Match #   Opponent       AB_MP
+                        Won | Lost
+    1       Random      97  |   3
+    2        MM_MN      88  |  12
+    3        AB_MN      62  |  38
+--------------------------------------------------------------------------
+           Win Rate:      82.3%
+Fri Sep  1 13:59:42 PDT 2017
+
+
+##########
+MPP vs MPN
+##########
+
+(aind) MacBook-Pro-7:AIND-Isolation carconper$ date; python tournament_MPPvsMPN.py ; date
+Fri Sep  1 14:06:58 PDT 2017
+
+                        *************************
+                             Playing Matches
+                        *************************
+
+ Match #   Opponent      AB_MPP
+                        Won | Lost
+    1       Random      93  |   7
+    2       MM_MPN      69  |  31
+    3       AB_MPN      49  |  51
+--------------------------------------------------------------------------
+           Win Rate:      70.3%
+
+There were 5.0 timeouts during the tournament -- make sure your agent handles search timeout correctly, and consider increasing the timeout margin for your agent.
+
+Fri Sep  1 14:19:07 PDT 2017
+
+
+##########
+DOP vs DON
+##########
+
+
+(aind) MacBook-Pro-7:AIND-Isolation carconper$ date; python tournament_DOPvsDON.py ; date
+Fri Sep  1 14:37:12 PDT 2017
+
+                        *************************
+                             Playing Matches
+                        *************************
+
+ Match #   Opponent      AB_DOP
+                        Won | Lost
+    1       Random      91  |   9
+    2       MM_DON      82  |  18
+    3       AB_DON      52  |  48
+--------------------------------------------------------------------------
+           Win Rate:      75.0%
+Fri Sep  1 14:48:18 PDT 2017
+
+
+
+##########
+PI vs I
+##########
+
+(aind) MacBook-Pro-7:AIND-Isolation carconper$ date; python tournament_PIvsI.py ; date
+Fri Sep  1 16:55:05 PDT 2017
+
+                        *************************
+                             Playing Matches
+                        *************************
+
+ Match #   Opponent       AB_PI
+                        Won | Lost
+    1     MM_Improved   74  |  26
+    2     AB_Improved   49  |  51
+--------------------------------------------------------------------------
+           Win Rate:      61.5%
+
+There were 3.0 timeouts during the tournament -- make sure your agent handles search timeout correctly, and consider increasing the timeout margin for your agent.
+
+Fri Sep  1 17:04:18 PDT 2017
+
+
+##########
+DOP vs DCP
+##########
+
+(aind) MacBook-Pro-7:AIND-Isolation carconper$ date; python tournament_DOPvsDCP.py ; date
+Fri Sep  1 18:37:08 PDT 2017
+
+                        *************************
+                             Playing Matches
+                        *************************
+
+ Match #   Opponent      AB_DOP
+                        Won | Lost
+    1      MM_Center    435 |  65
+    2      AB_Center    276 |  224
+--------------------------------------------------------------------------
+           Win Rate:      71.1%
+Fri Sep  1 19:20:06 PDT 2017
+
+
+
+##########
+DOP vs I
+##########
+
+(aind) MacBook-Pro-7:AIND-Isolation carconper$ date; python tournament_DOPvsI.py ; date
+Fri Sep  1 20:40:30 PDT 2017
+
+                        *************************
+                             Playing Matches
+                        *************************
+
+ Match #   Opponent      AB_DOP
+                        Won | Lost
+    1     MM_Improved   350 |  150
+    2     AB_Improved   246 |  254
+--------------------------------------------------------------------------
+           Win Rate:      59.6%
+Fri Sep  1 21:24:55 PDT 2017
+
+##########
+DCN vs DCP
+##########
+
+(aind) MacBook-Pro-7:AIND-Isolation carconper$ date; python tournament_DCPvsDCN.py; date
+Sun Sep  3 16:42:02 PDT 2017
+
+                        *************************
+                             Playing Matches
+                        *************************
+
+ Match #   Opponent      AB_DCN
+                        Won | Lost
+    1      AB_Center    101 |  99
+--------------------------------------------------------------------------
+           Win Rate:      50.5%
+
+There were 7.0 timeouts during the tournament -- make sure your agent handles search timeout correctly, and consider increasing the timeout margin for your agent.
+
+Sun Sep  3 16:54:10 PDT 2017
+
+
+########
+DCP vs I
+########
+
+(aind) MacBook-Pro-7:AIND-Isolation carconper$ date; python tournament_DCPvsI.py; date
+Sun Sep  3 17:37:07 PDT 2017
+
+                        *************************
+                             Playing Matches
+                        *************************
+
+ Match #   Opponent      AB_DCP
+                        Won | Lost
+    1     AB_Improved   91  |  109
+--------------------------------------------------------------------------
+           Win Rate:      45.5%
+Sun Sep  3 17:48:55 PDT 2017
